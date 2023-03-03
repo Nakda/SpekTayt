@@ -1,0 +1,79 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build-client",
+      "type": "process",
+      "command": "dotnet",
+      "args": [
+        "build",
+        "--configuration",
+        "Release",
+        "--output",
+        "${workspaceFolder}/build/Client",
+        "${workspaceFolder}/src/Client/Spektayt.Client.csproj"
+      ],
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "build-server",
+      "type": "process",
+      "command": "dotnet",
+      "args": [
+        "build",
+        "--configuration",
+        "Release",
+        "--output",
+        "${workspaceFolder}/build/Server",
+        "${workspaceFolder}/src/Server/Spektayt.Server.csproj"
+      ],
+      "problemMatcher": "$msCompile"
+    },   
+    {
+      "label": "publish-client",
+      "type": "process",
+      "command": "dotnet",
+      "args": [
+        "publish",
+        "--configuration",
+        "Release",
+        "${workspaceFolder}/src/Client/Spektayt.Client.csproj",
+        "--output",
+        "${workspaceFolder}/publish/Client"
+      ],
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "publish-server",
+      "type": "process",
+      "command": "dotnet",
+      "args": [
+        "publish",
+        "--configuration",
+        "Release",
+        "${workspaceFolder}/src/Server/Spektayt.Server.csproj",
+        "--output",
+        "${workspaceFolder}/publish/Server"
+      ],
+      "problemMatcher": "$msCompile",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "build-all",
+      "dependsOn": ["build-client", "build-server"],
+      "group": {
+        "kind": "build"
+      }
+    },
+    {
+      "label": "publish-all",
+      "dependsOn": ["publish-client", "publish-server"],
+      "group": {
+        "kind": "build"
+      }
+    }
+  ]
+}
