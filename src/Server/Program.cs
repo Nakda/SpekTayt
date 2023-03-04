@@ -1,3 +1,4 @@
+using System.Net;
 using Microsoft.AspNetCore.ResponseCompression;
 using Spektayt.Server.Hubs;
 
@@ -12,6 +13,12 @@ builder.Services.AddResponseCompression(opts =>
 {
     opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
         new[] { "application/octet-stream" });
+});
+
+builder.Services.AddHttpsRedirection(options =>
+{
+    options.RedirectStatusCode = (int)HttpStatusCode.TemporaryRedirect;
+    options.HttpsPort = 443;
 });
 
 var app = builder.Build();
