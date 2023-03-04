@@ -7,4 +7,6 @@ RUN dotnet publish --configuration Release --output ./build ./src/Server/Spektay
 FROM mcr.microsoft.com/dotnet/aspnet:6.0-alpine
 WORKDIR /app
 COPY --from=build /app/build .
+
+EXPOSE 80
 ENTRYPOINT ["dotnet", "Spektayt.Server.dll"]
