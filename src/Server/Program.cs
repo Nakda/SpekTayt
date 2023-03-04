@@ -1,4 +1,5 @@
 using System.Net;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.ResponseCompression;
 using Spektayt.Server.Hubs;
 
@@ -16,6 +17,11 @@ builder.Services.AddResponseCompression(opts =>
 });
 
 var app = builder.Build();
+
+app.UseForwardedHeaders(new ForwardedHeadersOptions
+{
+    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+});
 
 // Use Response Compression Middleware
 app.UseResponseCompression();
