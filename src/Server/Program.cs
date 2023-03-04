@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.ResponseCompression;
-using BlazorWebAssemblySignalRApp.Server.Hubs;
+using Spektayt.Server.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
