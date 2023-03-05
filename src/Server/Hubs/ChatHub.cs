@@ -8,6 +8,6 @@ public class ChatHub : Hub
     [HubMethodName(ChatOperation.Send)]
     public async Task SendMessage(string user, string message)
     {
-        await Clients.Others.SendAsync(ChatOperation.Receive, user, message);
+        await Clients.All.SendAsync(ChatOperation.Receive, user, message);
     }
 }
