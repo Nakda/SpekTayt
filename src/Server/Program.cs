@@ -18,8 +18,8 @@ builder.Services.AddResponseCompression(opts =>
 
 var app = builder.Build();
 
-// Allow local connections.
-app.Urls.Add("http://0.0.0.0:5000");
+// // Allow local connections.
+// app.Urls.Add("http://0.0.0.0:5000");
 
 // app.UseForwardedHeaders(new ForwardedHeadersOptions
 // {
