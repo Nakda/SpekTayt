@@ -1,6 +1,7 @@
 FROM mcr.microsoft.com/dotnet/sdk:6.0-alpine AS build
-WORKDIR /app
+RUN dotnet workload install wasm-tools
 
+WORKDIR /app
 COPY src/ ./src/
 RUN dotnet publish --configuration Release --output ./build ./src/Server/Spektayt.Server.csproj
 
