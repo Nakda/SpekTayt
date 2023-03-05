@@ -50,11 +50,13 @@
     }
 
     private async Task Send()
-    {
+    {      
         if (hubConnection is not null)
-            {
-                await hubConnection.SendAsync(ChatOperation.Send, userInput, messageInput);
-            }
+        {
+            await hubConnection.SendAsync(ChatOperation.Send, userInput, messageInput);
+
+            messageInput = string.Empty;
+        }
     }
 
     public bool IsConnected => hubConnection?.State == HubConnectionState.Connected;
