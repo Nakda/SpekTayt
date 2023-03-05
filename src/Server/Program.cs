@@ -16,11 +16,24 @@ builder.Services.AddResponseCompression(opts =>
         new[] { "application/octet-stream" });
 });
 
+// builder.Services.Configure<ForwardedHeadersOptions>(options =>
+// {
+//     var configuration = builder.Configuration;
+//     var proxy = IPAddress.Parse(configuration["Proxy"]);
+
+//     options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+//     options.KnownProxies.Add(proxy);
+// });
+
 var app = builder.Build();
+
+// Allow local connections.
+app.Urls.Add("https://0.0.0.0:5000");
 
 app.UseForwardedHeaders(new ForwardedHeadersOptions
 {
-    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto,
+    KnownProxies = { IPAddress.Parse("172.19.0.3") }
 });
 
 // Use Response Compression Middleware
@@ -44,7 +57,6 @@ app.UseBlazorFrameworkFiles();
 app.UseStaticFiles();
 
 app.UseRouting();
-
 
 app.MapRazorPages();
 app.MapControllers();
