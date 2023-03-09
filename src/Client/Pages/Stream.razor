@@ -1,0 +1,68 @@
+@page "/stream"
+@implements IDisposable
+@inject NavigationManager Navigation
+@inject IJSRuntime JSRuntime
+
+<PageTitle>Stream</PageTitle>
+
+@if (!streaming)
+{
+    <EditForm Model="@streamOptions">
+        <div>
+            <InputRadioGroup @bind-Value="@streamOptions.Resolution" Name="resolutions">
+                @foreach (var resolution in Enum.GetValues(typeof(StreamOptions.StreamResolution)))
+                {
+                    <label>
+                        <InputRadio Value="@resolution" />
+                        @resolution
+                    </label>
+                }
+            </InputRadioGroup>
+        </div>
+
+        <div>
+            <InputRadioGroup @bind-Value="@streamOptions.FrameRate" Name="framerates">
+                @foreach (var framerate in Enum.GetValues(typeof(StreamOptions.StreamFrameRate)))
+                {
+                    <label>
+                        <InputRadio Value="@framerate" />
+                        @framerate
+                    </label>
+                } 
+            </InputRadioGroup>
+        </div>
+    </EditForm>
+
+    <button class="oi oi-play-circle" @onclick="StartStreaming">START</button>
+}
+
+<video id="video" autoplay></video>
+
+@code {
+    
+    private DotNetObjectReference<Stream>? streamReference;
+    private bool streaming;
+    private StreamOptions streamOptions = new StreamOptions();
+
+    protected override void OnInitialized()
+    {
+        streamReference = DotNetObjectReference.Create(this);
+    }
+
+    private async Task StartStreaming()
+    {
+        streaming = await JSRuntime.InvokeAsync<bool>("startCapture", streamReference, (int)streamOptions.Resolution, (int)streamOptions.FrameRate);
+    }
+
+    [JSInvokable("onStreamingEnded")]
+    public async Task OnStreamingEnded()
+    {    
+        streaming = false;
+        await InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        streamReference?.Dispose();
+    }
+}
